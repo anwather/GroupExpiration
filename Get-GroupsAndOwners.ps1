@@ -1,5 +1,5 @@
 $groups = Get-MgGroup -Filter "groupTypes/any(c:c eq 'Unified')"
-
+$groupArray = @()
 foreach ($group in $groups) {
     $obj = [PSCustomObject]@{
         Id                 = $group.id
@@ -12,5 +12,7 @@ foreach ($group in $groups) {
             Get-MGUser -UserId $_.id | Select-Object -ExpandProperty UserPrincipalName
         }
     }
-    $obj
+    $groupArray += $obj
 }
+
+$groupArray | Export-Csv -Path output.csv
